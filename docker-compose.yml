@@ -1,0 +1,34 @@
+services:
+  psyplan-backend:
+    image: psyplan-backend:latest
+    networks:
+      - psyplan-internal
+    environment:
+      - ASSISTANT_API_KEY=${ASSISTANT_API_KEY}
+      # ... autres env vars backend (datasource, etc.)
+
+  psyplan-assistant-mcp:
+    build: ./psyplan-assistant-mcp
+    networks:
+      - psyplan-internal
+    environment:
+      - PSYPLAN_BACKEND_URL=http://psyplan-backend:8080
+      - PSYPLAN_BACKEND_ASSISTANT_API_KEY=${ASSISTANT_API_KEY}
+      - PORT=3000
+      - LOG_LEVEL=info
+    depends_on:
+      psyplan-backend:
+        condition: service_healthy
+    # PAS de "ports:" — le MCP n'est pas exposé sur l'hôte
+
+  openclaw:
+    image: openclaw:latest
+    networks:
+      - psyplan-internal
+    environment:
+      - MCP_URL=http://psyplan-assistant-mcp:3000/mcp
+    # ... autres configs OpenClaw
+
+networks:
+  psyplan-internal:
+    driver: bridge
