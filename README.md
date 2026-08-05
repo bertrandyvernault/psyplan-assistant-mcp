@@ -14,6 +14,10 @@ WhatsApp ──► OpenClaw ──MCP──► psyplan-assistant-mcp ──HTTP�
 |---|---|---|
 | `schedule.get_today` | `GET /assistant/practitioner/today-schedule` | Planning du jour du praticien |
 | `availability.get_for_date` | `GET /assistant/practitioner/available-slots?date=YYYY-MM-DD` | Créneaux libres pour une date |
+| `patients.search` | `GET /assistant/patients/search?name=` | Recherche de patients par nom |
+| `sessions.check_conflict` | `POST /assistant/sessions/check-conflict` | Vérifie si un créneau est libre avant création |
+| `sessions.create` | `POST /assistant/sessions` | Crée une séance ponctuelle |
+| `recurring_session_slots.create` | `POST /assistant/recurring-session-slots` | Crée un créneau récurrent hebdomadaire |
 
 ## Prérequis
 

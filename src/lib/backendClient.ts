@@ -9,14 +9,17 @@ export type BackendCallContext = {
 
 export type BackendClient = {
   get: <T>(path: string, ctx: BackendCallContext) => Promise<T>;
+  post: <T>(path: string, body: unknown, ctx: BackendCallContext) => Promise<T>;
 };
 
 export const createBackendClient = (
   config: Config,
   logger: Logger,
 ): BackendClient => {
-  const get = async <T>(
+  const request = async <T>(
+    method: "GET" | "POST",
     path: string,
+    body: unknown,
     ctx: BackendCallContext,
   ): Promise<T> => {
     const requestId = randomUUID();
@@ -31,13 +34,14 @@ export const createBackendClient = (
 
     try {
       const response = await fetch(url, {
-        method: "GET",
+        method,
         headers: {
           "Content-Type": "application/json",
           "X-Assistant-Api-Key": config.PSYPLAN_BACKEND_ASSISTANT_API_KEY,
           "X-Assistant-Whatsapp-Number": ctx.whatsappNumber,
           "X-Assistant-Request-Id": requestId,
         },
+        body: body === undefined ? undefined : JSON.stringify(body),
         signal: controller.signal,
       });
 
@@ -48,10 +52,10 @@ export const createBackendClient = (
       );
 
       if (!response.ok) {
-        const body = (await response
+        const responseBody = (await response
           .json()
           .catch(() => ({}))) as Record<string, unknown>;
-        throw mapBackendError(response.status, body, requestId);
+        throw mapBackendError(response.status, responseBody, requestId);
       }
 
       return (await response.json()) as T;
@@ -68,5 +72,14 @@ export const createBackendClient = (
     }
   };
 
-  return { get };
+  const get = <T>(path: string, ctx: BackendCallContext): Promise<T> =>
+    request<T>("GET", path, undefined, ctx);
+
+  const post = <T>(
+    path: string,
+    body: unknown,
+    ctx: BackendCallContext,
+  ): Promise<T> => request<T>("POST", path, body, ctx);
+
+  return { get, post };
 };

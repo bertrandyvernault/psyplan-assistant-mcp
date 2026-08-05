@@ -6,6 +6,10 @@ import { createLogger } from "./lib/logger.js";
 import { createBackendClient } from "./lib/backendClient.js";
 import { registerScheduleGetToday } from "./tools/scheduleGetToday.js";
 import { registerAvailabilityGetForDate } from "./tools/availabilityGetForDate.js";
+import { registerPatientsSearch } from "./tools/patientsSearch.js";
+import { registerSessionsCheckConflict } from "./tools/sessionsCheckConflict.js";
+import { registerSessionsCreate } from "./tools/sessionsCreate.js";
+import { registerRecurringSessionSlotsCreate } from "./tools/recurringSessionSlotsCreate.js";
 
 const config = loadConfig();
 const logger = createLogger(config.LOG_LEVEL);
@@ -18,6 +22,10 @@ const mcpServer = new McpServer({
 
 registerScheduleGetToday(mcpServer, backendClient, logger);
 registerAvailabilityGetForDate(mcpServer, backendClient, logger);
+registerPatientsSearch(mcpServer, backendClient, logger);
+registerSessionsCheckConflict(mcpServer, backendClient, logger);
+registerSessionsCreate(mcpServer, backendClient, logger);
+registerRecurringSessionSlotsCreate(mcpServer, backendClient, logger);
 
 const app = express();
 app.use(express.json());

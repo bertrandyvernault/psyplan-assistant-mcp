@@ -38,3 +38,47 @@ export const availableSlotsResponseSchema = z.object({
 export type AvailableSlotsResponse = z.infer<
   typeof availableSlotsResponseSchema
 >;
+
+export const patientMatchResponseSchema = z.object({
+  id: z.number(),
+  firstName: z.string(),
+  lastName: z.string(),
+  fullName: z.string(),
+});
+
+export const patientSearchResponseSchema = z.array(patientMatchResponseSchema);
+
+export type PatientSearchResponse = z.infer<typeof patientSearchResponseSchema>;
+
+export const sessionConflictCheckResponseSchema = z.object({
+  hasConflict: z.boolean(),
+  reason: z
+    .enum(["EXISTING_SESSION", "ACTIVE_RECURRING_SLOT", "FUTURE_PUNCTUAL_SESSION"])
+    .nullable(),
+});
+
+export type SessionConflictCheckResponse = z.infer<
+  typeof sessionConflictCheckResponseSchema
+>;
+
+export const assistantSessionResponseSchema = z.object({
+  id: z.number(),
+  patientName: z.string(),
+  date: z.string(),
+  startTime: z.string(),
+  endTime: z.string(),
+  type: z.enum(["OFFICE_SESSION", "TELEPHONE_SESSION"]),
+  status: z.enum([
+    "SCHEDULED",
+    "COMPLETED",
+    "CANCELED",
+    "BLOCKED",
+    "MISSED",
+    "UNBILLABLE",
+  ]),
+  isRecurring: z.boolean(),
+});
+
+export type AssistantSessionResponse = z.infer<
+  typeof assistantSessionResponseSchema
+>;

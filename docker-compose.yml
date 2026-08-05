@@ -12,7 +12,7 @@ services:
     networks:
       - psyplan-internal
     environment:
-      - PSYPLAN_BACKEND_URL=http://psyplan-backend:8080
+      - PSYPLAN_BACKEND_URL=http://psyplan-backend:8080/api
       - PSYPLAN_BACKEND_ASSISTANT_API_KEY=${ASSISTANT_API_KEY}
       - PORT=3000
       - LOG_LEVEL=info
