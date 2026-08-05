@@ -44,6 +44,7 @@ const validSlotsResponse = {
   date: "2026-05-01",
   slotDurationMinutes: 60,
   coveredByAbsence: false,
+  isWorkingDay: true,
   slots: [
     { startTime: "09:00", endTime: "10:00" },
     { startTime: "10:00", endTime: "11:00" },
