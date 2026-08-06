@@ -15,14 +15,17 @@ export const registerAvailabilityGetForDate = (
   backendClient: BackendClient,
   logger: Logger,
 ) => {
-  mcpServer.tool(
+  mcpServer.registerTool(
     "availability.get_for_date",
-    "Returns the practitioner's free time slots for a specific date (YYYY-MM-DD format). " +
-      "When slots is empty, use the flags to explain why: " +
-      "isWorkingDay=false means it's a weekend (the practitioner doesn't work); " +
-      "coveredByAbsence=true means an absence/vacation covers the whole day; " +
-      "otherwise, the schedule is full (no free slots).",
-    inputSchema.shape,
+    {
+      description:
+        "Returns the practitioner's free time slots for a specific date (YYYY-MM-DD format). " +
+        "When slots is empty, use the flags to explain why: " +
+        "isWorkingDay=false means it's a weekend (the practitioner doesn't work); " +
+        "coveredByAbsence=true means an absence/vacation covers the whole day; " +
+        "otherwise, the schedule is full (no free slots).",
+      inputSchema: inputSchema.shape,
+    },
     async (input) => {
       try {
         const raw = await backendClient.get<unknown>(

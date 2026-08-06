@@ -15,18 +15,21 @@ export const registerPatientsSearch = (
   backendClient: BackendClient,
   logger: Logger,
 ) => {
-  mcpServer.tool(
+  mcpServer.registerTool(
     "patients.search",
-    "Searches active patients by name (accepts part of the first or last name). " +
-      "Use before creating a session, to resolve the name given by the practitioner into a patientId. " +
-      "If the returned list has exactly 1 patient, use it directly. " +
-      "If it has more than 1, list the full names and ask the practitioner which one is correct " +
-      "before continuing. If the list is empty, inform them that no patient was found with that name. " +
-      "The id field of each patient is for internal use only (to fill patientId in subsequent calls) " +
-      "and must NEVER appear in the message sent to the practitioner on WhatsApp — never write " +
-      '"(id: X)" or any variation. When listing patients for the practitioner to choose from, use ' +
-      "only the full name.",
-    inputSchema.shape,
+    {
+      description:
+        "Searches active patients by name (accepts part of the first or last name). " +
+        "Use before creating a session, to resolve the name given by the practitioner into a patientId. " +
+        "If the returned list has exactly 1 patient, use it directly. " +
+        "If it has more than 1, list the full names and ask the practitioner which one is correct " +
+        "before continuing. If the list is empty, inform them that no patient was found with that name. " +
+        "The id field of each patient is for internal use only (to fill patientId in subsequent calls) " +
+        "and must NEVER appear in the message sent to the practitioner on WhatsApp — never write " +
+        '"(id: X)" or any variation. When listing patients for the practitioner to choose from, use ' +
+        "only the full name.",
+      inputSchema: inputSchema.shape,
+    },
     async (input) => {
       try {
         const raw = await backendClient.get<unknown>(

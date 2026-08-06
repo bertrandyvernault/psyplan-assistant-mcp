@@ -14,13 +14,16 @@ export const registerScheduleGetToday = (
   backendClient: BackendClient,
   logger: Logger,
 ) => {
-  mcpServer.tool(
+  mcpServer.registerTool(
     "schedule.get_today",
-    "Returns the practitioner's schedule for the current day (sessions with time, patient, type, " +
-      "status). The sessionId field of each item is for internal use only and must NEVER be shown to " +
-      'the practitioner on WhatsApp — never write "(id: X)" or any variation. When listing the ' +
-      "schedule, cite only time, patient, type, and status.",
-    inputSchema.shape,
+    {
+      description:
+        "Returns the practitioner's schedule for the current day (sessions with time, patient, type, " +
+        "status). The sessionId field of each item is for internal use only and must NEVER be shown to " +
+        'the practitioner on WhatsApp — never write "(id: X)" or any variation. When listing the ' +
+        "schedule, cite only time, patient, type, and status.",
+      inputSchema: inputSchema.shape,
+    },
     async (input) => {
       try {
         const raw = await backendClient.get<unknown>(

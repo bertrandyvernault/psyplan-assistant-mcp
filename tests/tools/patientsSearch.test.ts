@@ -22,13 +22,12 @@ type Captured = {
 const captureTool = (): { server: McpServer; getCaptured: () => Captured } => {
   let captured: Captured | undefined;
   const server = {
-    tool: (
+    registerTool: (
       name: string,
-      _description: string,
-      shape: z.ZodRawShape,
+      config: { inputSchema: z.ZodRawShape },
       handler: ToolHandler,
     ) => {
-      captured = { name, schema: z.object(shape), handler };
+      captured = { name, schema: z.object(config.inputSchema), handler };
     },
   } as unknown as McpServer;
   return {
