@@ -20,16 +20,22 @@ export const registerSessionsCheckConflict = (
 ) => {
   mcpServer.tool(
     "sessions.check_conflict",
-    "Verifica se um horário está livre ANTES de criar uma sessão pontual ou recorrente. " +
-      "Use isRecurring=true para verificar um horário recorrente semanal (dia da semana + horário " +
-      "de todas as semanas a partir de date), ou isRecurring=false para verificar apenas essa data. " +
-      "SEMPRE chame esta ferramenta antes de sessions.create ou recurring_session_slots.create, " +
-      "para não prometer um horário ao praticien que depois falha na criação. " +
-      "Se hasConflict=true, explique o motivo em linguagem natural sem usar o valor técnico de reason: " +
-      "EXISTING_SESSION significa que já existe uma sessão nesse horário; " +
-      "ACTIVE_RECURRING_SLOT significa que outro paciente já tem um horário recorrente nesse dia/horário; " +
-      "FUTURE_PUNCTUAL_SESSION significa que uma sessão pontual futura já ocupa esse dia da semana/horário. " +
-      "Nunca crie a sessão se hasConflict=true.",
+    "Checks whether a time slot is free BEFORE creating a punctual or recurring session. " +
+      "Use isRecurring=true to check a weekly recurring slot (day of week + time, every week " +
+      "starting from date), or isRecurring=false to check only that date. " +
+      "ALWAYS call this tool before sessions.create or recurring_session_slots.create, " +
+      "so you never promise a time slot to the practitioner that then fails on creation. " +
+      "If hasConflict=true, explain the reason in natural language without using the raw " +
+      "technical value of reason: " +
+      "EXISTING_SESSION means a session already exists at that time; " +
+      "ACTIVE_RECURRING_SLOT means another patient already has a recurring slot on that day/time; " +
+      "FUTURE_PUNCTUAL_SESSION means a future punctual session already occupies that day of week/time. " +
+      "Never create the session if hasConflict=true. " +
+      "If hasConflict=true, do NOT propose actions you have no way to perform, such as cancelling, " +
+      "rescheduling, or moving the session causing the conflict — no available tool does that. " +
+      "Limit yourself to explaining the conflict and suggesting only what you can actually do: " +
+      "check another time slot (sessions.check_conflict again) or consult availability.get_for_date " +
+      "to find a free slot.",
     inputSchema.shape,
     async (input) => {
       try {

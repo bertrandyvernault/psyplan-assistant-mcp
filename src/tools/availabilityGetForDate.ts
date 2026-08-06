@@ -17,11 +17,11 @@ export const registerAvailabilityGetForDate = (
 ) => {
   mcpServer.tool(
     "availability.get_for_date",
-    "Retorna os horários livres do praticien para uma data específica (formato YYYY-MM-DD). " +
-      "Quando slots está vazio, use os flags para explicar o motivo: " +
-      "isWorkingDay=false significa fim de semana (o praticien não trabalha); " +
-      "coveredByAbsence=true significa ausência/férias no dia todo; " +
-      "caso contrário, a agenda está cheia (nenhum horário livre).",
+    "Returns the practitioner's free time slots for a specific date (YYYY-MM-DD format). " +
+      "When slots is empty, use the flags to explain why: " +
+      "isWorkingDay=false means it's a weekend (the practitioner doesn't work); " +
+      "coveredByAbsence=true means an absence/vacation covers the whole day; " +
+      "otherwise, the schedule is full (no free slots).",
     inputSchema.shape,
     async (input) => {
       try {

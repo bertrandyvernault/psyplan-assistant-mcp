@@ -17,11 +17,15 @@ export const registerPatientsSearch = (
 ) => {
   mcpServer.tool(
     "patients.search",
-    "Busca pacientes ativos pelo nome (aceita parte do primeiro nome ou sobrenome). " +
-      "Use antes de criar uma sessão, para resolver o nome informado pelo praticien em um patientId. " +
-      "Se a lista retornada tiver exatamente 1 paciente, use-o diretamente. " +
-      "Se tiver mais de 1, liste os nomes completos e pergunte ao praticien qual deles é o correto " +
-      "antes de continuar. Se a lista estiver vazia, informe que nenhum paciente foi encontrado com esse nome.",
+    "Searches active patients by name (accepts part of the first or last name). " +
+      "Use before creating a session, to resolve the name given by the practitioner into a patientId. " +
+      "If the returned list has exactly 1 patient, use it directly. " +
+      "If it has more than 1, list the full names and ask the practitioner which one is correct " +
+      "before continuing. If the list is empty, inform them that no patient was found with that name. " +
+      "The id field of each patient is for internal use only (to fill patientId in subsequent calls) " +
+      "and must NEVER appear in the message sent to the practitioner on WhatsApp — never write " +
+      '"(id: X)" or any variation. When listing patients for the practitioner to choose from, use ' +
+      "only the full name.",
     inputSchema.shape,
     async (input) => {
       try {

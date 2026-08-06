@@ -16,7 +16,10 @@ export const registerScheduleGetToday = (
 ) => {
   mcpServer.tool(
     "schedule.get_today",
-    "Retorna a agenda do dia atual do praticien (sessões com horário, paciente, tipo, status).",
+    "Returns the practitioner's schedule for the current day (sessions with time, patient, type, " +
+      "status). The sessionId field of each item is for internal use only and must NEVER be shown to " +
+      'the practitioner on WhatsApp — never write "(id: X)" or any variation. When listing the ' +
+      "schedule, cite only time, patient, type, and status.",
     inputSchema.shape,
     async (input) => {
       try {
