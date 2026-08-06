@@ -1,0 +1,50 @@
+name: Deploy Assistant MCP to VPS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy via Ansible
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install Ansible
+      run: pip install -r ansible/requirements.txt
+
+    - name: Install Ansible collections
+      run: ansible-galaxy collection install -r ansible/requirements.yml
+
+    - name: Set up SSH key
+      run: |
+        mkdir -p ~/.ssh
+        printf '%s\n' "${{ secrets.VPS_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        ssh-keyscan -H "${{ secrets.VPS_SSH_HOST }}" >> ~/.ssh/known_hosts
+
+    - name: Run Ansible deploy playbook
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: "False"
+      run: |
+        ansible-playbook ansible/deploy.yml \
+          -i "${{ secrets.VPS_SSH_HOST }}," \
+          --user "${{ secrets.VPS_SSH_USER }}" \
+          --private-key ~/.ssh/deploy_key \
+          --extra-vars "github_token=${{ secrets.GHCR_TOKEN }} github_actor=${{ github.actor }}"
+
+    - name: Upload deployment logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: deploy-logs-${{ github.sha }}
+        path: /tmp/psyplan-assistant-mcp-deploy.log
+        retention-days: 5

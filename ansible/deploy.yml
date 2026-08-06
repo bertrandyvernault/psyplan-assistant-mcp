@@ -1,0 +1,59 @@
+---
+- name: Deploy PsyPlan Assistant MCP
+  hosts: all
+
+  vars:
+    compose_dir: /home/bertrand/workspace/psyplan/psyplan-assistant-mcp/devops/docker
+    app_network: psyplan-app-network
+    ghcr_registry: ghcr.io
+    log_file: /tmp/psyplan-assistant-mcp-deploy.log
+
+  tasks:
+    - name: Ensure Docker network exists
+      community.docker.docker_network:
+        name: "{{ app_network }}"
+        state: present
+
+    - name: Login to GitHub Container Registry
+      community.docker.docker_login:
+        registry_url: "{{ ghcr_registry }}"
+        username: "{{ github_actor }}"
+        password: "{{ github_token }}"
+
+    - name: Pull latest MCP image
+      community.docker.docker_compose_v2:
+        project_src: "{{ compose_dir }}"
+        files:
+          - docker-compose.prod.yml
+        pull: always
+        state: present
+      register: compose_result
+
+    - name: Restart MCP service only (no impact on backend/postgres)
+      community.docker.docker_compose_v2:
+        project_src: "{{ compose_dir }}"
+        files:
+          - docker-compose.prod.yml
+        state: present
+        recreate: always
+
+    - name: Wait for MCP to be healthy
+      ansible.builtin.shell: |
+        docker exec psyplan-assistant-mcp wget -qO- http://localhost:3000/health
+      register: health_check
+      retries: 15
+      delay: 10
+      until: health_check.rc == 0
+      changed_when: false
+
+    - name: Collect container logs
+      ansible.builtin.shell: |
+        docker compose -f {{ compose_dir }}/docker-compose.prod.yml logs --tail=100 2>&1
+      register: container_logs
+      changed_when: false
+
+    - name: Save logs to file
+      ansible.builtin.copy:
+        content: "{{ container_logs.stdout }}"
+        dest: "{{ log_file }}"
+        mode: '0644'

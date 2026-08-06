@@ -1,0 +1,30 @@
+# =============================================================================
+# Docker Compose - PRODUCTION (standalone deploy)
+# Usage: docker compose -f docker-compose.prod.yml up -d --no-deps
+# Connects to the existing psyplan-app-network created by the backend deploy.
+# Does not touch backend/postgres containers.
+# =============================================================================
+
+services:
+  psyplan-assistant-mcp:
+    image: ghcr.io/bertrandyvernault/psyplan-assistant-mcp:latest
+    container_name: psyplan-assistant-mcp
+    restart: unless-stopped
+    environment:
+      PSYPLAN_BACKEND_URL: http://backend:8080/api
+      PSYPLAN_BACKEND_ASSISTANT_API_KEY: ${ASSISTANT_API_KEY}
+      PORT: 3000
+      LOG_LEVEL: info
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # Pas de "ports:" — jamais exposé sur l'hôte
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true
+    name: psyplan-app-network
