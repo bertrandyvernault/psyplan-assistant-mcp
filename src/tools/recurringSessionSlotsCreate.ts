@@ -40,6 +40,10 @@ export const registerRecurringSessionSlotsCreate = (
         "The id returned after creation is for internal use only and must NEVER be shown to the " +
         'practitioner on WhatsApp — never write "(id: X)" or any variation. Confirm the creation by ' +
         "citing only patient, day of week, time, and type. " +
+        "The type parameter is a technical enum (OFFICE_SESSION/TELEPHONE_SESSION) for internal use " +
+        "only — never show these raw values to the practitioner, whether asking for the type or " +
+        "confirming it. Always use natural language instead: OFFICE_SESSION means an in-person/office " +
+        "session, TELEPHONE_SESSION means a phone/remote session. " +
         "This tool only creates recurring slots. There is no tool to cancel, edit, or end an already " +
         "created recurring slot — never offer these actions to the practitioner; if they ask, tell them " +
         "it cannot be done here.",

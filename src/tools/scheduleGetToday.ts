@@ -21,7 +21,10 @@ export const registerScheduleGetToday = (
         "Returns the practitioner's schedule for the current day (sessions with time, patient, type, " +
         "status). The sessionId field of each item is for internal use only and must NEVER be shown to " +
         'the practitioner on WhatsApp — never write "(id: X)" or any variation. When listing the ' +
-        "schedule, cite only time, patient, type, and status.",
+        "schedule, cite only time, patient, type, and status. The type field is a technical enum " +
+        "(OFFICE_SESSION/TELEPHONE_SESSION) for internal use only — never show these raw values; " +
+        "always use natural language instead: OFFICE_SESSION means an in-person/office session, " +
+        "TELEPHONE_SESSION means a phone/remote session.",
       inputSchema: inputSchema.shape,
     },
     async (input) => {

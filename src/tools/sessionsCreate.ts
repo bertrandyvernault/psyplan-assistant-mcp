@@ -36,6 +36,10 @@ export const registerSessionsCreate = (
         "The id returned after creation is for internal use only and must NEVER be shown to the " +
         'practitioner on WhatsApp — never write "(id: X)" or any variation. Confirm the creation by ' +
         "citing only patient, date, time, and type. " +
+        "The type parameter is a technical enum (OFFICE_SESSION/TELEPHONE_SESSION) for internal use " +
+        "only — never show these raw values to the practitioner, whether asking for the type or " +
+        "confirming it. Always use natural language instead: OFFICE_SESSION means an in-person/office " +
+        "session, TELEPHONE_SESSION means a phone/remote session. " +
         "This tool only creates sessions. There is no tool to cancel, edit, or reschedule an already " +
         "created session — never offer these actions to the practitioner; if they ask, tell them it " +
         "cannot be done here.",
