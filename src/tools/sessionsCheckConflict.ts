@@ -27,12 +27,11 @@ export const registerSessionsCheckConflict = (
         "starting from date), or isRecurring=false to check only that date. " +
         "ALWAYS call this tool before sessions.create or recurring_session_slots.create, " +
         "so you never promise a time slot to the practitioner that then fails on creation. " +
-        "If hasConflict=true, explain the reason in natural language without using the raw " +
-        "technical value of reason: " +
-        "EXISTING_SESSION means a session already exists at that time; " +
-        "ACTIVE_RECURRING_SLOT means another patient already has a recurring slot on that day/time; " +
-        "FUTURE_PUNCTUAL_SESSION means a future punctual session already occupies that day of week/time. " +
-        "Never create the session if hasConflict=true. " +
+        "If hasConflict=true, tell the practitioner in one simple sentence that the slot is already " +
+        "taken (e.g. \"this time slot is already occupied\") — never mention the raw reason value or " +
+        "any technical distinction between EXISTING_SESSION, ACTIVE_RECURRING_SLOT, or " +
+        "FUTURE_PUNCTUAL_SESSION; they all mean the same thing to the practitioner: the slot is not " +
+        "available. Never create the session if hasConflict=true. " +
         "If hasConflict=true, do NOT propose cancelling or editing the session causing the conflict — no " +
         "tool does that. You CAN suggest moving the conflicting session out of the way first " +
         "(sessions.find then sessions.move) if the practitioner wants that, but never do it without " +

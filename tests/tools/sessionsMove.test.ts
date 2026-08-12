@@ -40,12 +40,14 @@ const captureTool = (): { server: McpServer; getCaptured: () => Captured } => {
 };
 
 const validMoveResponse = {
-  sessionId: 42,
+  id: 42,
+  patientName: "Maria Silva",
   date: "2026-08-20",
   startTime: "15:00",
   endTime: "15:45",
   type: "OFFICE_SESSION",
   status: "SCHEDULED",
+  isRecurring: false,
 };
 
 describe("sessions.move tool", () => {

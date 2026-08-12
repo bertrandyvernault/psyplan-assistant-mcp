@@ -38,7 +38,7 @@ export const registerSessionsMove = (
         "The sessionId, recurringSlotId, and targetDate values must come only from a prior sessions.find " +
         "or schedule.get_today call in this same conversation — never reuse them from an earlier, " +
         "unrelated request or infer them. " +
-        "The sessionId returned after the move is for internal use only and must NEVER be shown to the " +
+        "The id field returned after the move is for internal use only and must NEVER be shown to the " +
         'practitioner on WhatsApp — never write "(id: X)" or any variation. Confirm the move by citing ' +
         "only patient, new date, and new time. " +
         "The type field, if present in the response, is a technical enum (OFFICE_SESSION/" +
