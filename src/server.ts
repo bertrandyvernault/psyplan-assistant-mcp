@@ -9,6 +9,8 @@ import { registerAvailabilityGetForDate } from "./tools/availabilityGetForDate.j
 import { registerPatientsSearch } from "./tools/patientsSearch.js";
 import { registerSessionsCheckConflict } from "./tools/sessionsCheckConflict.js";
 import { registerSessionsCreate } from "./tools/sessionsCreate.js";
+import { registerSessionsFind } from "./tools/sessionsFind.js";
+import { registerSessionsMove } from "./tools/sessionsMove.js";
 import { registerRecurringSessionSlotsCreate } from "./tools/recurringSessionSlotsCreate.js";
 
 const config = loadConfig();
@@ -25,6 +27,8 @@ registerAvailabilityGetForDate(mcpServer, backendClient, logger);
 registerPatientsSearch(mcpServer, backendClient, logger);
 registerSessionsCheckConflict(mcpServer, backendClient, logger);
 registerSessionsCreate(mcpServer, backendClient, logger);
+registerSessionsFind(mcpServer, backendClient, logger);
+registerSessionsMove(mcpServer, backendClient, logger);
 registerRecurringSessionSlotsCreate(mcpServer, backendClient, logger);
 
 const app = express();

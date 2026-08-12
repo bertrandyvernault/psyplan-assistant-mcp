@@ -15,6 +15,7 @@ type ToolHandler = (input: Record<string, unknown>) => Promise<{
 
 type Captured = {
   name: string;
+  description: string;
   schema: z.ZodObject<z.ZodRawShape>;
   handler: ToolHandler;
 };
@@ -24,10 +25,15 @@ const captureTool = (): { server: McpServer; getCaptured: () => Captured } => {
   const server = {
     registerTool: (
       name: string,
-      config: { inputSchema: z.ZodRawShape },
+      config: { description: string; inputSchema: z.ZodRawShape },
       handler: ToolHandler,
     ) => {
-      captured = { name, schema: z.object(config.inputSchema), handler };
+      captured = {
+        name,
+        description: config.description,
+        schema: z.object(config.inputSchema),
+        handler,
+      };
     },
   } as unknown as McpServer;
   return {
@@ -145,5 +151,21 @@ describe("sessions.create tool", () => {
     expect(result.isError).toBe(true);
     const payload = JSON.parse(result.content[0].text);
     expect(payload.error.code).toBe("UNKNOWN");
+  });
+
+  it("description no longer claims moving/rescheduling is impossible, and points to sessions.move", () => {
+    const { server, getCaptured } = captureTool();
+    registerSessionsCreate(
+      server,
+      { get: vi.fn(), post: vi.fn() } as BackendClient,
+      silentLogger,
+    );
+
+    const { description } = getCaptured();
+
+    expect(description).not.toContain(
+      "no tool to cancel, edit, or reschedule",
+    );
+    expect(description).toContain("sessions.move");
   });
 });

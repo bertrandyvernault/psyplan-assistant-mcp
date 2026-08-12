@@ -40,9 +40,9 @@ export const registerSessionsCreate = (
         "only — never show these raw values to the practitioner, whether asking for the type or " +
         "confirming it. Always use natural language instead: OFFICE_SESSION means an in-person/office " +
         "session, TELEPHONE_SESSION means a phone/remote session. " +
-        "This tool only creates sessions. There is no tool to cancel, edit, or reschedule an already " +
-        "created session — never offer these actions to the practitioner; if they ask, tell them it " +
-        "cannot be done here.",
+        "This tool only creates sessions. There is no tool to cancel or edit notes/status of an already " +
+        "created session — never offer those actions. To move a session to a different date/time, use " +
+        "sessions.find (or schedule.get_today) then sessions.move instead of creating a duplicate here.",
       inputSchema: inputSchema.shape,
     },
     async (input) => {
