@@ -33,11 +33,12 @@ export const registerSessionsCheckConflict = (
         "ACTIVE_RECURRING_SLOT means another patient already has a recurring slot on that day/time; " +
         "FUTURE_PUNCTUAL_SESSION means a future punctual session already occupies that day of week/time. " +
         "Never create the session if hasConflict=true. " +
-        "If hasConflict=true, do NOT propose actions you have no way to perform, such as cancelling, " +
-        "rescheduling, or moving the session causing the conflict — no available tool does that. " +
-        "Limit yourself to explaining the conflict and suggesting only what you can actually do: " +
-        "check another time slot (sessions.check_conflict again) or consult availability.get_for_date " +
-        "to find a free slot.",
+        "If hasConflict=true, do NOT propose cancelling or editing the session causing the conflict — no " +
+        "tool does that. You CAN suggest moving the conflicting session out of the way first " +
+        "(sessions.find then sessions.move) if the practitioner wants that, but never do it without " +
+        "their explicit request and confirmation. Otherwise, limit yourself to explaining the conflict " +
+        "and suggesting what you can do directly: check another time slot (sessions.check_conflict " +
+        "again) or consult availability.get_for_date to find a free slot.",
       inputSchema: inputSchema.shape,
     },
     async (input) => {

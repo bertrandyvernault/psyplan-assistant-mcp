@@ -82,3 +82,28 @@ export const assistantSessionResponseSchema = z.object({
 export type AssistantSessionResponse = z.infer<
   typeof assistantSessionResponseSchema
 >;
+
+export const sessionSearchResultSchema = z.object({
+  sessionId: z.number().nullable(),
+  recurringSlotId: z.number().nullable().optional(),
+  date: z.string(),
+  startTime: z.string(),
+  endTime: z.string(),
+  type: z.enum(["OFFICE_SESSION", "TELEPHONE_SESSION"]),
+  status: z.string(),
+});
+
+export const sessionSearchResponseSchema = z.array(sessionSearchResultSchema);
+
+export type SessionSearchResponse = z.infer<typeof sessionSearchResponseSchema>;
+
+export const sessionMoveResponseSchema = z.object({
+  sessionId: z.number(),
+  date: z.string(),
+  startTime: z.string(),
+  endTime: z.string(),
+  type: z.enum(["OFFICE_SESSION", "TELEPHONE_SESSION"]),
+  status: z.string(),
+});
+
+export type SessionMoveResponse = z.infer<typeof sessionMoveResponseSchema>;

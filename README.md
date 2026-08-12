@@ -8,7 +8,7 @@ Il ne contient **aucune logique métier** : il traduit les appels MCP en appels 
 WhatsApp ──► OpenClaw ──MCP──► psyplan-assistant-mcp ──HTTP──► psyplan-backend ──► PostgreSQL
 ```
 
-## Tools V0
+## Tools
 
 | Tool | Endpoint backend | Description |
 |---|---|---|
@@ -18,6 +18,8 @@ WhatsApp ──► OpenClaw ──MCP──► psyplan-assistant-mcp ──HTTP�
 | `sessions.check_conflict` | `POST /assistant/sessions/check-conflict` | Vérifie si un créneau est libre avant création |
 | `sessions.create` | `POST /assistant/sessions` | Crée une séance ponctuelle |
 | `recurring_session_slots.create` | `POST /assistant/recurring-session-slots` | Crée un créneau récurrent hebdomadaire |
+| `sessions.find` | `GET /assistant/sessions/search?patientId=&fromDate=&toDate=` | Recherche les séances d'un patient sur une plage de dates (localiser une séance à déplacer) |
+| `sessions.move` | `POST /assistant/sessions/move` | Déplace une séance existante (ou une occurrence future non générée) vers une nouvelle date/heure |
 
 ## Prérequis
 
